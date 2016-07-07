@@ -100,7 +100,8 @@ router.post('/facebook', (req, res) => {
             displayName: profile.name,
             profileImage: profile.picture.data.url,
             facebook: profile.id,
-            age: profile.age
+            age: profile.age,
+            education: profile.education
           });
 
           newUser.save((err, savedUser) => {
