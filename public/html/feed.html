@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Feed</title>
+</head>
+<body ng-app='myApp' ng-controller='homeCtrl'>
+  <h1>Feed</h1>
+
+  <div class = "userDisplay" ng-repeat = 'user in userFeed'>
+    <div> Name: {{user.displayName}}</div>
+    <div> Email: {{user.email}}</div>
+    <img ng-src="{{user.profileImage}}">
+    <div> About: </div>
+    <hr>
+  </div>
+
+</body>
+</html>
