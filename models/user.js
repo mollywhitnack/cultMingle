@@ -8,34 +8,39 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 let userSchema = new mongoose.Schema({
   email: String,
-  password: String,
+  password: {type: String},//, select: false},
   displayName: String, // their name
   profileImage: String,
-  facebook: String  // Facebook profile id
+  facebook: String,  // Facebook profile id
+  education: String,
+  about: String,
+  age : String,
+  wallPosts: [{fromId: String, message: String}}]
 });
 
-userSchema.statics.authMiddleware = function(req, res, next) {
 
-  let tokenHeader = req.headers.authorization;
+userSchema.statics.authMiddleware = function(){
+  return function(req, res, next) {
 
-  if(!tokenHeader) {
-    return res.status(401).send({error: 'Missing authorization header.'});
-  }
+    let tokenHeader = req.headers.authorization;
 
-  let token = tokenHeader.split(' ')[1];
+    if(!tokenHeader) {
+      return res.status(401).send({error: 'Missing authorization header.'});
+    }
 
-  jwt.verify(token, JWT_SECRET, (err, payload) => {
-    if(err) return res.status(401).send(err);
+    let token = tokenHeader.split(' ')[1];
+
+    jwt.verify(token, JWT_SECRET, (err, payload) => {
+      if(err) return res.status(401).send(err);
 
     User.findById(payload._id, (err, user) => {
       if(err || !user) return res.status(401).send(err || {error: 'User not found.'});
-
-      req.user = user;
-
-      next();
-    }).select('-password');
-  });
-};
+        req.user = user;
+        next();
+      }).select('-password');
+    });
+  };
+}
 
 
 userSchema.methods.generateToken = function() {

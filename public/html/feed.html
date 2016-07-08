@@ -5,13 +5,17 @@
   <title>Feed</title>
 </head>
 <body ng-app='myApp' ng-controller='homeCtrl'>
-  <h1>Feed</h1>
-
+  <h1>Find Other Culties!</h1>
+<hr>
   <div class = "userDisplay" ng-repeat = 'user in userFeed'>
-    <div> Name: {{user.displayName}}</div>
-    <div> Email: {{user.email}}</div>
-    <img ng-src="{{user.profileImage}}">
-    <div> About: </div>
+    <span class = "feedInfo"><div>{{user.displayName}}</div>
+      <div> Contact: {{user.email}}</div>
+      <div class = "feedAbout"> About: {{user.about}} </div>
+      <br>
+      <button class = "btn btn-info" ui-sref = 'profile({userId: user._id})'>View {{user.displayName}}'s profile</button>
+    </span>
+
+    <span class = "feedPic"><img class = "imgalighn" ng-src="{{user.profileImage}}" style="max-height:90px"></span>
     <hr>
   </div>
 

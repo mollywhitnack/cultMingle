@@ -1,40 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>{{user.displayName}}</title>
-</head>
-<body ng-app='myApp' ng-controller='mainCtrl'>
-  <div class = "container">{{user.displayName}}</div>
-
-  <img ng-src="{{user.profileImage}}">
-
-<pre>{{user | json}}</pre>
-
-</body>
-</html>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title> {{user.username}}</title>
+  <title> {{user.displayName}}</title>
 </head>
 <body ng-app='myApp' ng-controller='profileCtrl'>
-<h1>{{user.username}}</h1>
+<h1 class = "text-center">{{user.displayName}}</h1>
 
-  <div class = "pictureCont">  <img src = 'https://www.outsystems.com/PortalTheme/img/UserImage.png?24064'></div>
-  <button class = "btn btn-info" ng-hide = "photoForm" ng-click = "showPictureForm()">Edit Profile Picture</button>
+<div class = "text-center">
+
+  <button ng-if ="currentUser._id === user._id" class = "btn btn-info" ng-hide = "displayNameForm" ng-click = "showdisplayNameForm()">Edit Username</button>
+  <form ng-submit = updatedisplayName() ng-show = "displayNameForm">
+    <input type = "text" placeholder = "USername" ng-model = 'newItem.displayName'>
+    <button class = "btn btn-info" >Submit</button>
+    <button class = "btn btn-danger" type = "cancel" ng-click = "canceldisplayName()">Cancel</button>
+  </form>
+  <hr>
+
+  <div class = "pictureCont"> <img ng-src="{{user.profileImage}}" style="max-width:300px"></div>
+  <button ng-if ="currentUser._id === user._id" class = "btn btn-info" ng-hide = "photoForm" ng-click = "showPictureForm()">Edit Profile Picture</button>
   <form ng-submit = updatePicture() ng-show = "photoForm">
-    <input type = "text" placeholder = "Picture Url" ng-model = 'newItem.photoUrl'>
+    <input type = "text" placeholder = "Picture Url" ng-model = 'newItem.profileImage'>
     <button class = "btn btn-info" >Submit</button>
     <button class = "btn btn-danger" type = "cancel" ng-click = "cancelPhotoUrl()">Cancel</button>
   </form>
 
   <hr>
 
-  <div class = 'educationCont'>Education: </div>
-  <button class = "btn btn-info" ng-hide = "educationForm" ng-click = "showEducationForm()">Edit Education</button>
+  <div class = 'educationCont'>Education: {{user.education}}</div>
+  <button ng-if ="currentUser._id === user._id" class = "btn btn-info" ng-hide = "educationForm" ng-click = "showEducationForm()">Edit Education</button>
   <form ng-submit = updateEducation() ng-show = "educationForm">
     <input type = "text" placeholder = "Education" ng-model = 'newItem.education'>
     <button class = "btn btn-info" >Submit</button>
@@ -43,18 +38,31 @@
 
   <hr>
 
-  <div class = 'aboutCont'>About Me: </div>
-  <button class = "btn btn-info" ng-hide = "aboutForm" ng-click = "showAboutForm()">Edit About Me</button>
+  <div class = 'aboutCont'>About Me: {{user.about}}</div>
+  <button ng-if ="currentUser._id === user._id" class = "btn btn-info" ng-hide = "aboutForm" ng-click = "showAboutForm()">Edit About Me</button>
   <form ng-submit = updateAbout() ng-show = "aboutForm">
     <input type = "text" placeholder = "About" ng-model = 'newItem.about'>
     <button class = "btn btn-info" >Submit</button>
     <button class = "btn btn-danger" type = "cancel" ng-click = "cancelAbout()">Cancel</button>
   </form>
-
   <hr>
 
-  <button class = "btn btn-danger" ng-click = "deleteAccount()">Delete Account</button>
+  <button ng-if ="currentUser._id === user._id" class = "btn btn-danger" ng-click = "deleteAccount(user)">Delete Account</button>
 
 
+
+</div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+

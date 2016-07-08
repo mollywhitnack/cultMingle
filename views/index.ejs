@@ -18,9 +18,10 @@
 </head>
 <body ng-app='myApp' ng-controller='mainCtrl'>
   <div class="container">
-    <h1>Friends</h1>
-
-    <h2> isAuthenticated: {{ isAuthenticated() }} </h2>
+    
+    <h1 class = "text-center cultMingle">CultMingle <img class ="barn" src="http://clipartix.com/wp-content/uploads/2016/05/Barn-clipart-image.png" style="max-width:70px"></h1>
+    <div class = "text-center">
+    <!--<h2> isAuthenticated: {{ isAuthenticated() }} </h2>-->
 
     <button class="btn" ui-sref='home'>Home</button>
     <span ng-if='!isAuthenticated()'>
@@ -32,8 +33,8 @@
     </span>
 
     <button class="btn" ui-sref='profile'>Profile</button>
-    <button class="btn" ui-sref='feed'>Feed</button>
-    
+    <button class="btn" ui-sref='feed'>Members</button>
+    </div>
     <div ui-view></div>
     
   </div>

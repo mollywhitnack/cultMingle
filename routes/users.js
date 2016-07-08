@@ -16,13 +16,31 @@ router.get('/', (req, res) =>{
   });
 });
 
-router.get('/profile', User.authMiddleware, (req, res) => {
+router.get('/profile', User.authMiddleware(), (req, res) => {
   console.log('req.user:', req.user);
   res.send(req.user);
 });
 
-router.put('/profile', User.authMiddleware, (req, res) =>{
-    console.log('req.user:', req.user);
+router.get('/profile/:id', User.authMiddleware(), (req, res) => {
+  User.findById(req.params.id, req.body, {new :true}, (err, savedProf)=>{
+      res.status(err ? 400 :200).send(err || savedProf);
+    })
+});
+
+
+//to update profile
+router.put('/profile/:id', User.authMiddleware(), (req, res) =>{
+    console.log('req.params.id:', req.params.id);
+    User.findByIdAndUpdate(req.params.id, req.body, {new :true}, (err, savedProf)=>{
+      res.status(err ? 400 :200).send(err || savedProf);
+    })
+});
+
+router.delete('/profile/:id', User.authMiddleware(), (req, res) =>{
+    console.log('req.params.id:', req.params.id);
+    User.findByIdAndRemove(req.params.id, {new :true}, (err, removed)=>{
+      res.status(err ? 400 :200).send(err || removed);
+    })
 });
 
 router.post('/login', (req, res) =>{
@@ -48,7 +66,7 @@ router.post('/facebook', (req, res) => {
   //    b.  Retrieve an existing user from our database
   //  4.  Generate a JWT and respond with it.
 
-  var fields = ['id', 'email', 'first_name', 'last_name', 'link', 'name', 'picture', 'age'];
+  var fields = ['id', 'email', 'first_name', 'last_name', 'link', 'name', 'picture'];
   var accessTokenUrl = 'https://graph.facebook.com/v2.5/oauth/access_token';
   var graphApiUrl = 'https://graph.facebook.com/v2.5/me?fields=' + fields.join(',');
 
@@ -101,7 +119,8 @@ router.post('/facebook', (req, res) => {
             profileImage: profile.picture.data.url,
             facebook: profile.id,
             age: profile.age,
-            education: profile.education
+            education: profile.education,
+            about: profile.about
           });
 
           newUser.save((err, savedUser) => {

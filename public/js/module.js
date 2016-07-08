@@ -29,19 +29,27 @@ app.config(function($stateProvider, $urlRouterProvider) {
       controller: 'registerCtrl'
     })
     .state('profile', {
-      url: '/profile',
+      url: '/profile/:userId',
       templateUrl: '/html/profile.html',
       controller: 'profileCtrl',
       resolve: {
         Profile: function(User) {
           return User.profile();
+        },
+        ProfileByID: function(User, $stateParams){
+          return User.getProfile($stateParams.userId);
         }
       }
     })
     .state('feed', {
       url: '/feed',
       templateUrl: '/html/feed.html',
-      controller: 'feedCtrl'
+      controller: 'feedCtrl'/*,
+      resolve: {
+        Users: function(User) {
+          return User.getAll();
+        }
+      }*/
     })
   $urlRouterProvider.otherwise('/');
 });
