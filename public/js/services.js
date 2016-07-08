@@ -8,6 +8,19 @@ var app = angular.module('myApp');
     return $http.get('/api/users');
   }
 })*/
+app.service('WallPost', function($http, $q) {
+  
+  this.addWallPost = (post) =>{
+    console.log("add post in servies: ", post);
+    return $http.post(`/api/wallposts`, post)
+      .then(res => {
+        return $q.resolve(res.data);
+      })
+      .catch(err => {   
+        console.log('err:', err);
+      })
+    };
+});
 
 app.service('User', function($http, $q) {
 
@@ -56,5 +69,16 @@ app.service('User', function($http, $q) {
       console.log("err:", err);
     });
   }
+
+  this.addWallPostToUser = (userId, postId) =>{
+    console.log("userId: ",userId ," postId: ", postId)
+    return $http.put(`/api/users/profile/${userId}/addWallPost/${postId}`)
+    .then(res => {
+        return $q.resolve(res.data);
+    })
+    .catch(err => {   
+        console.log('err:', err);
+    })
+  }; 
 
 });

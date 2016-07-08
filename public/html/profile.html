@@ -49,7 +49,14 @@
 
   <button ng-if ="currentUser._id === user._id" class = "btn btn-danger" ng-click = "deleteAccount(user)">Delete Account</button>
 
+  <form class = "addWallPost" ng-submit = "submitMessage()">
+    <input type = "text" ng-model = "newItem.text">
+    <button class = "btn btn-primary" >Post</button>
+  </form>
 
+  <pre>{{user | json }}</pre>
+ 
+  <div ng-repeat = "post in user.wallposts track by $index">{{post}}</div>
 
 </div>
 </body>

@@ -30,7 +30,7 @@ html{
   height:100%;
 }
 body{
-  color:white;
+
   background-attachment: fixed;
   background-repeat: none;
   /* can be treated like a fallback */
@@ -39,5 +39,5 @@ body{
   background-image: linear-gradient(blue, red);
   /* these will reset other properties, like background-position, but it does know what you mean */
   background: red;
-  background: linear-gradient(grey, black);
+  background: linear-gradient(#d0d0e1, #e6e6e6);
 }

@@ -6,6 +6,12 @@ const bcrypt = require('bcryptjs');
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
+/*let wallSchema = new mongoose.Schema({
+  from: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+  text: String,
+  createdAt: String
+});*/
+
 let userSchema = new mongoose.Schema({
   email: String,
   password: {type: String},//, select: false},
@@ -15,8 +21,23 @@ let userSchema = new mongoose.Schema({
   education: String,
   about: String,
   age : String,
-  wallPosts: [{fromId: String, message: String}}]
+  wallposts: [{type: mongoose.Schema.Types.ObjectId, ref: 'wallpost'}]
 });
+
+
+userSchema.statics.addWallPost = function(userId, postId, cb){
+    //'this' is apartment model
+    this.findById(userId, (err, user)=>{
+      if(err || !user) return cb(err || 'post not found');
+       user.addWallPostMethod(postId, cb);
+    })
+}
+
+
+userSchema.methods.addWallPostMethod = function(postId, cb){
+    this.wallposts.push(postId);
+    this.save(cb);
+}
 
 
 userSchema.statics.authMiddleware = function(){

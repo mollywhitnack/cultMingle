@@ -36,6 +36,14 @@ router.put('/profile/:id', User.authMiddleware(), (req, res) =>{
     })
 });
 
+router.put('/api/users/profile/:userId/addWallPost/:postId', User.authMiddleware(), (req, res) =>{
+    console.log('req.params.userId:', req.params.userId);
+    console.log('req.params.postId:', req.params.postId);
+    User.addWallPost(req.params.userId, req.params.postId, {new :true}, (err, savedProf)=>{
+      res.status(err ? 400 :200).send(err || savedProf);
+    })
+});
+
 router.delete('/profile/:id', User.authMiddleware(), (req, res) =>{
     console.log('req.params.id:', req.params.id);
     User.findByIdAndRemove(req.params.id, {new :true}, (err, removed)=>{

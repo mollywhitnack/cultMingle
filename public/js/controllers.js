@@ -79,7 +79,7 @@ app.controller('feedCtrl', function($scope, $$state, $state, User) {
 
 });
 
-app.controller('profileCtrl', function($scope, Profile, ProfileByID, $state, User, $rootScope) {
+app.controller('profileCtrl', function($scope, Profile, ProfileByID, $state, User, $rootScope, WallPost) {
   console.log('profileCtrl!');
 
   $rootScope.currentUser = Profile;
@@ -196,6 +196,42 @@ app.controller('profileCtrl', function($scope, Profile, ProfileByID, $state, Use
       });
   }
 
+ $scope.addPicture = ()=>{
+    Picture.addPicture($scope.newItem)
+    .then(picture=>{
+      console.log("added" , picture);
+      Album.addPictureToAlbum($stateParams.albumId, picture._id);
+    })
+    .then($state.go($state.$current, null, { reload: true }))
+    .catch(err=>{
+      console.log("error: ", err );
+    })
+  }
+
+  //album is user
+  $scope.submitMessage = () =>{
+    //set all values of wall post (from, created at ...)
+    //first add post to post db then to user
+    //console.log("text:", $scope.newItem.text);
+    //console.log("Profile: ", Profile._id);
+    //console.log("ProfileByID: ", ProfileByID._id);
+    var postObj = {
+      from: Profile._id,
+      text: $scope.newItem.text,
+      createdAt: "add moment"
+    };
+
+
+    WallPost.addWallPost(postObj)
+      .then(wallpost =>{
+        console.log("wallpost:" , wallpost);
+        User.addWallPostToUser(ProfileByID._id, wallpost._id);
+      })
+      .then($state.go($state.$current, null, { reload: true }))
+      .catch(err =>{
+        console.log("err: ", err);
+      })
+   };
 
 });
 
